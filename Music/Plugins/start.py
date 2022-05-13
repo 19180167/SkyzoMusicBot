@@ -115,7 +115,7 @@ async def play(_, message: Message):
     if len(message.command) == 1:
         user_id = message.from_user.id
         user_name = message.from_user.first_name
-        rpk = "[" + user_name + "](tg://user?id=" + str(user_id) + ")"
+        rpk = f"[{user_name}](tg://user?id={str(user_id)})"
         await app.send_message(
             message.chat.id,
             text=f"""
@@ -173,7 +173,7 @@ async def play(_, message: Message):
             for count, user_id in enumerate(sudoers, 1):
                 try:
                     user = await app.get_users(user_id)
-                    user = user.first_name if not user.mention else user.mention
+                    user = user.mention or user.first_name
                 except Exception:
                     continue
                 text += f"- {user}\n"
