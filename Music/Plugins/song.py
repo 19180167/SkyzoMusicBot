@@ -135,13 +135,16 @@ async def startyuplay(_,CallbackQuery):
     chat_id = CallbackQuery.message.chat.id
     chat_title = CallbackQuery.message.chat.title
     callback_request = callback_data.split(None, 1)[1]
-    userid = CallbackQuery.from_user.id 
+    userid = CallbackQuery.from_user.id
     try:
         id,duration,user_id = callback_request.split("|") 
     except Exception as e:
         return await CallbackQuery.message.edit(f"Error Occured\n**Possible reason could be**:{e}")
     if duration == "None":
-        return await CallbackQuery.message.reply_text(f"Sorry!, Live Videos are not supported")      
+        return await CallbackQuery.message.reply_text(
+            "Sorry!, Live Videos are not supported"
+        )
+
     if CallbackQuery.from_user.id != int(user_id):
         return await CallbackQuery.answer("This is not for you! Search You Own Song nigga", show_alert=True)
     await CallbackQuery.message.delete()
@@ -152,12 +155,12 @@ async def startyuplay(_,CallbackQuery):
     smex = int(time_to_seconds(duration))
     if smex > DURATION_LIMIT:
         await CallbackQuery.message.reply_text(f"**__Duration Error__**\n\n**Allowed Duration: **90 minute(s)\n**Received Duration:** {duration} minute(s)")
-        return 
+        return
     try:
         with yt_dlp.YoutubeDL(ytdl_opts) as ytdl:
             x = ytdl.extract_info(url, download=False)
     except Exception as e:
-        return await CallbackQuery.message.reply_text(f"Failed to download this video.\n\n**Reason**:{e}") 
+        return await CallbackQuery.message.reply_text(f"Failed to download this video.\n\n**Reason**:{e}")
     title = (x["title"])
     await CallbackQuery.answer(f"Selected {title[:20]}.... \nProcessing..", show_alert=True)
     thumbnail = (x["thumbnail"])
@@ -169,7 +172,7 @@ async def startyuplay(_,CallbackQuery):
         photo=thumb,
         reply_markup=InlineKeyboardMarkup(buttons),    
         caption=(f"🎥<b>__Title:__ </b>[{title[:25]}]({url})\n💡[Get Additional Information](https://t.me/{BOT_USERNAME}?start=info_{id})")
-    )   
+    )
     os.remove(thumb)
     await CallbackQuery.message.delete()
 
@@ -248,53 +251,84 @@ async def chonga(_,CallbackQuery):
       
       
 def search_markup(ID1, ID2, ID3, ID4, ID5, duration1, duration2, duration3, duration4, duration5, user_id, query):
-    buttons= [
-            [
-                InlineKeyboardButton(text="1️⃣", callback_data=f'beta {ID1}|{duration1}|{user_id}'),
-                InlineKeyboardButton(text="2️⃣", callback_data=f'beta {ID2}|{duration2}|{user_id}'),
-                InlineKeyboardButton(text="3️⃣", callback_data=f'beta {ID3}|{duration3}|{user_id}')
-            ],
-            [ 
-                InlineKeyboardButton(text="4️⃣", callback_data=f'beta {ID4}|{duration4}|{user_id}'),
-                InlineKeyboardButton(text="5️⃣", callback_data=f'beta {ID5}|{duration5}|{user_id}')
-            ],
-            [ 
-                
-                InlineKeyboardButton(text="⬅️", callback_data=f'chonga 1|{query}|{user_id}'), 
-                InlineKeyboardButton(text="🗑", callback_data=f"ppcl2 smex|{user_id}") ,
-                InlineKeyboardButton(text="➡️", callback_data=f'chonga 1|{query}|{user_id}')             
-            ],
-        ]
-    return buttons   
+    return [
+        [
+            InlineKeyboardButton(
+                text="1️⃣", callback_data=f'beta {ID1}|{duration1}|{user_id}'
+            ),
+            InlineKeyboardButton(
+                text="2️⃣", callback_data=f'beta {ID2}|{duration2}|{user_id}'
+            ),
+            InlineKeyboardButton(
+                text="3️⃣", callback_data=f'beta {ID3}|{duration3}|{user_id}'
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text="4️⃣", callback_data=f'beta {ID4}|{duration4}|{user_id}'
+            ),
+            InlineKeyboardButton(
+                text="5️⃣", callback_data=f'beta {ID5}|{duration5}|{user_id}'
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text="⬅️", callback_data=f'chonga 1|{query}|{user_id}'
+            ),
+            InlineKeyboardButton(
+                text="🗑", callback_data=f"ppcl2 smex|{user_id}"
+            ),
+            InlineKeyboardButton(
+                text="➡️", callback_data=f'chonga 1|{query}|{user_id}'
+            ),
+        ],
+    ]   
 
 def search_markup2(ID6, ID7, ID8, ID9, ID10, duration6, duration7, duration8, duration9, duration10 ,user_id, query):
-    buttons= [
-            [
-                InlineKeyboardButton(text="6️⃣", callback_data=f'beta {ID6}|{duration6}|{user_id}'),
-                InlineKeyboardButton(text="7️⃣", callback_data=f'beta {ID7}|{duration7}|{user_id}'),
-                InlineKeyboardButton(text="8️⃣", callback_data=f'beta {ID8}|{duration8}|{user_id}')
-            ],
-            [ 
-                InlineKeyboardButton(text="9️⃣", callback_data=f'beta {ID9}|{duration9}|{user_id}'),
-                InlineKeyboardButton(text="🔟", callback_data=f'beta {ID10}|{duration10}|{user_id}')
-            ],
-            [ 
-                
-                InlineKeyboardButton(text="⬅️", callback_data=f'chonga 2|{query}|{user_id}'), 
-                InlineKeyboardButton(text="🗑️", callback_data=f"ppcl2 smex|{user_id}") ,
-                InlineKeyboardButton(text="➡️", callback_data=f'chonga 2|{query}|{user_id}')             
-            ],
-        ]
-    return buttons     
+    return [
+        [
+            InlineKeyboardButton(
+                text="6️⃣", callback_data=f'beta {ID6}|{duration6}|{user_id}'
+            ),
+            InlineKeyboardButton(
+                text="7️⃣", callback_data=f'beta {ID7}|{duration7}|{user_id}'
+            ),
+            InlineKeyboardButton(
+                text="8️⃣", callback_data=f'beta {ID8}|{duration8}|{user_id}'
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text="9️⃣", callback_data=f'beta {ID9}|{duration9}|{user_id}'
+            ),
+            InlineKeyboardButton(
+                text="🔟", callback_data=f'beta {ID10}|{duration10}|{user_id}'
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text="⬅️", callback_data=f'chonga 2|{query}|{user_id}'
+            ),
+            InlineKeyboardButton(
+                text="🗑️", callback_data=f"ppcl2 smex|{user_id}"
+            ),
+            InlineKeyboardButton(
+                text="➡️", callback_data=f'chonga 2|{query}|{user_id}'
+            ),
+        ],
+    ]     
       
 def gets(videoid, user_id):
-    buttons= [
-            [
-                InlineKeyboardButton(text="🧰 Get Audio", callback_data=f'gets audio|{videoid}|{user_id}'),
-                InlineKeyboardButton(text="🧰 Get Video", callback_data=f'gets video|{videoid}|{user_id}')
-            ],
-            [
-                InlineKeyboardButton(text="🗑 Close Menu", callback_data=f'close2')
-            ],
-        ]
-    return buttons
+    return [
+        [
+            InlineKeyboardButton(
+                text="🧰 Get Audio",
+                callback_data=f'gets audio|{videoid}|{user_id}',
+            ),
+            InlineKeyboardButton(
+                text="🧰 Get Video",
+                callback_data=f'gets video|{videoid}|{user_id}',
+            ),
+        ],
+        [InlineKeyboardButton(text="🗑 Close Menu", callback_data='close2')],
+    ]

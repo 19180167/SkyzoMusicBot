@@ -8,17 +8,14 @@ from Music.MusicUtilities.database.chats import get_served_chats
 
 @app.on_message(filters.command("broadcast_pin") & filters.user(SUDOERS))
 async def broadcast_message_pin_silent(_, message):
-    if not message.reply_to_message:
-        pass
-    else:
+    if message.reply_to_message:
         x = message.reply_to_message.message_id
         y = message.chat.id
         sent = 0
         pin = 0
         chats = []
         schats = await get_served_chats()
-        for chat in schats:
-            chats.append(int(chat["chat_id"]))
+        chats.extend(int(chat["chat_id"]) for chat in schats)
         for i in chats:
             try:
                 m = await app.forward_messages(i, y, x)
@@ -45,8 +42,7 @@ async def broadcast_message_pin_silent(_, message):
     pin = 0
     chats = []
     schats = await get_served_chats()
-    for chat in schats:
-        chats.append(int(chat["chat_id"]))
+    chats.extend(int(chat["chat_id"]) for chat in schats)
     for i in chats:
         try:
             m = await app.send_message(i, text=text)
@@ -66,17 +62,14 @@ async def broadcast_message_pin_silent(_, message):
 
 @app.on_message(filters.command("broadcast_pin_loud") & filters.user(SUDOERS))
 async def broadcast_message_pin_loud(_, message):
-    if not message.reply_to_message:
-        pass
-    else:
+    if message.reply_to_message:
         x = message.reply_to_message.message_id
         y = message.chat.id
         sent = 0
         pin = 0
         chats = []
         schats = await get_served_chats()
-        for chat in schats:
-            chats.append(int(chat["chat_id"]))
+        chats.extend(int(chat["chat_id"]) for chat in schats)
         for i in chats:
             try:
                 m = await app.forward_messages(i, y, x)
@@ -103,8 +96,7 @@ async def broadcast_message_pin_loud(_, message):
     pin = 0
     chats = []
     schats = await get_served_chats()
-    for chat in schats:
-        chats.append(int(chat["chat_id"]))
+    chats.extend(int(chat["chat_id"]) for chat in schats)
     for i in chats:
         try:
             m = await app.send_message(i, text=text)
@@ -124,16 +116,13 @@ async def broadcast_message_pin_loud(_, message):
 
 @app.on_message(filters.command("broadcast") & filters.user(SUDOERS))
 async def broadcast(_, message):
-    if not message.reply_to_message:
-        pass
-    else:
+    if message.reply_to_message:
         x = message.reply_to_message.message_id
         y = message.chat.id
         sent = 0
         chats = []
         schats = await get_served_chats()
-        for chat in schats:
-            chats.append(int(chat["chat_id"]))
+        chats.extend(int(chat["chat_id"]) for chat in schats)
         for i in chats:
             try:
                 m = await app.forward_messages(i, y, x)
@@ -152,8 +141,7 @@ async def broadcast(_, message):
     sent = 0
     chats = []
     schats = await get_served_chats()
-    for chat in schats:
-        chats.append(int(chat["chat_id"]))
+    chats.extend(int(chat["chat_id"]) for chat in schats)
     for i in chats:
         try:
             m = await app.send_message(i, text=text)

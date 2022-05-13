@@ -28,11 +28,9 @@ async def ban_globally(_, message):
         else:
             
             await add_gban_user(user.id)
-            served_chats = []
             chats = await get_served_chats()
-            for chat in chats:
-                served_chats.append(int(chat["chat_id"]))
-            m = await message.reply_text(f"**Initializing Gobal Ban on {user.mention}**\n\nExpected Time : {len(served_chats)}")    
+            served_chats = [int(chat["chat_id"]) for chat in chats]
+            m = await message.reply_text(f"**Initializing Gobal Ban on {user.mention}**\n\nExpected Time : {len(served_chats)}")
             number_of_chats = 0
             for sex in served_chats:
                 try:
@@ -42,7 +40,7 @@ async def ban_globally(_, message):
                 except FloodWait as e:
                     await asyncio.sleep(int(e.x))
                 except Exception:
-                    pass    
+                    pass
             ban_text = f"""
 **⛔️ New Global Ban on Music**
 **🗃️ Origin:** {message.chat.title} [`{message.chat.id}`]
@@ -53,7 +51,7 @@ async def ban_globally(_, message):
             try:
                 await m.delete()
             except Exception:
-                pass    
+                pass
             await message.reply_text(f"{ban_text}",disable_web_page_preview=True,)
         return
     from_user_id = message.from_user.id
@@ -66,7 +64,7 @@ async def ban_globally(_, message):
     elif user_id == BOT_ID:
         await message.reply_text("Should i block myself?")
     elif user_id in sudoers:
-        await message.reply_text("You want to block a sudo user?")             
+        await message.reply_text("You want to block a sudo user?")
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if is_gbanned:
@@ -75,9 +73,8 @@ async def ban_globally(_, message):
             await add_gban_user(user_id)
             served_chats = []
             chats = await get_served_chats()
-            for chat in chats:
-                served_chats.append(int(chat["chat_id"]))
-            m = await message.reply_text(f"**Initializing Gobal Ban on {mention}**\n\nExpected Time : {len(served_chats)}")    
+            served_chats.extend(int(chat["chat_id"]) for chat in chats)
+            m = await message.reply_text(f"**Initializing Gobal Ban on {mention}**\n\nExpected Time : {len(served_chats)}")
             number_of_chats = 0
             for sex in served_chats:
                 try:
@@ -87,7 +84,7 @@ async def ban_globally(_, message):
                 except FloodWait as e:
                     await asyncio.sleep(int(e.x))
                 except Exception:
-                    pass    
+                    pass
             ban_text = f"""
 __**New Global Ban on Music**__
 **Origin:** {message.chat.title} [`{message.chat.id}`]
@@ -98,8 +95,8 @@ __**New Global Ban on Music**__
             try:
                 await m.delete()
             except Exception:
-                pass    
-            await message.reply_text(f"{ban_text}",disable_web_page_preview=True,)    
+                pass
+            await message.reply_text(f"{ban_text}",disable_web_page_preview=True,)
             return
                   
                   
@@ -120,14 +117,14 @@ async def unban_globally(_, message):
         elif user.id == BOT_ID:
             await message.reply_text("Should i unblock myself?")
         elif user.id in sudoers:
-            await message.reply_text("Sudo users can't be blocked/unblocked.")         
+            await message.reply_text("Sudo users can't be blocked/unblocked.")
         else:
             is_gbanned = await is_gbanned_user(user.id)
             if not is_gbanned:
                 await message.reply_text("He's already free, why bully him?")
             else:
                 await remove_gban_user(user.id)
-                await message.reply_text(f"Ungbanned!")
+                await message.reply_text("Ungbanned!")
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
@@ -144,8 +141,8 @@ async def unban_globally(_, message):
         if not is_gbanned:
             await message.reply_text("He's already free, why bully him?")
         else:
-            await remove_gban_user(user_id)     
-            await message.reply_text(f"Ungbanned!")
+            await remove_gban_user(user_id)
+            await message.reply_text("Ungbanned!")
 
             
 chat_watcher_group = 5
